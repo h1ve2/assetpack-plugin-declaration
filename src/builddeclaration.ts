@@ -4,34 +4,32 @@ import path from "path";
 
 export type buildDeclarationOption = {
     /**
-     * 声明文件保存路径
+     * declaration file save path
      *
-     * 默认为 "./src/assets.ts"
+     * default: "./src/assets.ts"
      */
     dist?: string,
     /**
-     * 类型名称
+     * type name
      *
-     * 默认为 "AssetsDeclaration"
+     * default: "AssetsDeclaration"
      */
-    interfaceName?: string,
+    typeName?: string,
 
     /**
-     * assets对象名称
+     * assets object name
      *
-     * 默认为assets
+     * default: assets
      */
     objectName?: string
 
 
     /**
-     * 创建加载方法
+     * create loadBundle method
      *
-     * 不为空则创建
-     *
-     * 默认启用
+     * default: true
      */
-    createAssetFunction?: asset,
+    createLoadFunction?: asset,
 
     /**
      * 格式化工具
@@ -64,9 +62,9 @@ export type asset = {
 export function buildDeclaration(option?: buildDeclarationOption): AssetPipe {
     let options: buildDeclarationOption = {
         dist: "./src/assets.ts",
-        interfaceName: "AssetsDeclaration",
+        typeName: "AssetsDeclaration",
         objectName: "assets",
-        createAssetFunction: {
+        createLoadFunction: {
             changePixiAssets: false
         },
         // format: formatTool.eslint,
@@ -123,25 +121,26 @@ export function buildDeclaration(option?: buildDeclarationOption): AssetPipe {
 
         let str = `import {  Spritesheet,Texture,Assets,ArrayOr,ProgressCallback } from 'pixi.js';`
 
-        if (options.createAssetFunction) {
+        if (options.createLoadFunction) {
             str += `
 export let ${options.objectName}: AssetsDeclaration;
 export function resetAssets(as) {
     ${options.objectName} = {...${options.objectName}, ...Object.assign({}, ...Object.values(as))};
     console.log(${options.objectName});
 }
-const func = Assets.loadBundle;
+const func = Assets.loadBundle;`;
+            str += `
 export async function loadBundle (bundleIds: ArrayOr<string>, onProgress?: ProgressCallback): Promise<any> {
     const result = await func.apply(Assets, [bundleIds, onProgress]);
     resetAssets(result);
     return result;
 }`;
-            if (options.createAssetFunction.changePixiAssets)
+            if (options.createLoadFunction.changePixiAssets)
                 str += `
 Assets.loadBundle = loadBundle`;
         }
 
-        str += `\ntype ${options.interfaceName} ={`;
+        str += `\ntype ${options.typeName} ={`;
 
         for (let i: number = 0; i < jsonData.bundles.length; i++) {
             const assets: assetType[] = jsonData.bundles[i].assets;
