@@ -1,0 +1,36 @@
+{
+  "name": "assetpack-plugin-declaration",
+  "version": "0.0.1",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/h1ve2/assetpack-plugin-declaration.git"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "author": "h1ve2",
+  "license": "MIT",
+  "description": "Automatically build declaration files when using assetpack",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "./dist/"
+  ],
+  "dependencies": {
+    "execa": "^9.5.2"
+  },
+  "devDependencies": {
+    "@assetpack/core": "^1.4.0",
+    "pixi.js": "^8.8.1",
+    "typescript": "^5.8.2"
+  }
+}
