@@ -170,17 +170,6 @@ Assets.loadBundle = loadBundle`;
     }
 
 
-    type assetType = {
-        alias: string[],
-        data: {
-            tags: {
-                [propname: string]: boolean
-            }
-        },
-        src: string[]
-
-    }
-
     function getType(asset: assetType, pipeSystem: PipeSystem): string {
         const tags = asset.data.tags;
         // console.log(tags);
@@ -214,4 +203,16 @@ Assets.loadBundle = loadBundle`;
         // console.log(str);
         return str;
     }
+}
+
+
+type assetType = {
+    alias: string[],
+    data: {
+        tags: {
+            [propname: string]: boolean
+        }
+    },
+    src: string[]
+
 }
