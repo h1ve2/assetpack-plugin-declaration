@@ -1,5 +1,6 @@
 # assetpack-plugin-declaration
 
+[简体中文](./README.zh-CN.md)
 
 Automatically build declaration files when using assetpack
 
